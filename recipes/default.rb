@@ -22,8 +22,10 @@ include_recipe 'git'
 ############################################################################
 # Install dependencies
 
-package 'libcurl3' do
-  action :install
+if ['debian', 'ubuntu'].include?(node['platform'])
+  package 'libcurl3' do
+    action :install
+  end
 end
 
 package 'curl' do
@@ -31,10 +33,14 @@ package 'curl' do
 end
 
 if node['nvm']['install_deps_to_build_from_source']
-  package 'build-essential' do
-    action :install
-  end
-  package 'libssl-dev' do
-    action :install
+  case node['platform']
+  when 'debian', 'ubuntu'
+    package 'libssl-dev' do
+      action :install
+    end
+  when 'redhat', 'centos', 'fedora'
+    package 'openssl-devel' do
+      action :install
+    end
   end
 end

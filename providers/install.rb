@@ -39,6 +39,8 @@ action :create do
     nvm_base_dir = '/root'
   end
 
+	node.set['nvm']['home'] = nvm_base_dir
+
   directory nvm_base_dir + '/.nvm' do
     user chef_nvm_user
     group chef_nvm_group
