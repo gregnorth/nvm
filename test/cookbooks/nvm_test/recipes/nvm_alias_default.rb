@@ -9,5 +9,6 @@ nvm_install version  do
 end
 
 nvm_system_default version do
+	version version
 	action :create
 end
