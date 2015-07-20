@@ -8,3 +8,4 @@ supports 		 'ubuntu', ">= 12.04"
 version          "0.1.3"
 
 depends "git", ">= 2.1.0"
+depends "build-essential"

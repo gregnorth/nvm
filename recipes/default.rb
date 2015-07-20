@@ -18,29 +18,39 @@
 #
 
 include_recipe 'git'
+include_recipe 'nvm::install_dependencies'
 
-############################################################################
-# Install dependencies
-
-if ['debian', 'ubuntu'].include?(node['platform'])
-  package 'libcurl3' do
-    action :install
-  end
+directory node['nvm']['directory'] do
+  user node['nvm']['user']
+  group node['nvm']['group']
+  action :create
 end
 
-package 'curl' do
-  action :install
+directory '/usr/local/nvm' do
+  user node['nvm']['user']
+  group node['nvm']['group']
+  action :create
 end
 
-if node['nvm']['install_deps_to_build_from_source']
-  case node['platform']
-  when 'debian', 'ubuntu'
-    package 'libssl-dev' do
-      action :install
-    end
-  when 'redhat', 'centos', 'fedora'
-    package 'openssl-devel' do
-      action :install
-    end
-  end
+directory '/usr/local/nvm/alias' do
+  user node['nvm']['user']
+  group node['nvm']['group']
+  action :create
+end
+
+git node['nvm']['directory'] do
+  user node['nvm']['user']
+  group node['nvm']['group']
+  repository node['nvm']['repository']
+  reference node['nvm']['reference']
+  action :sync
+end
+
+template node['nvm']['source'] do
+  source 'nvm.sh.erb'
+  mode 0755
+  cookbook 'nvm'
+  variables ({
+    :nvm_directory => node['nvm']['directory']
+  })
 end

@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: nvm
-# Provider:: nvm_install
+# Provider:: nvm_alias_default
 #
 # Copyright 2013, HipSnip Limited
 #
@@ -17,27 +17,20 @@
 # limitations under the License.
 #
 
+# sets nvm node version in system path to make available to all users, must be run every time
+# `nvm use v#.#.#` is run if node version is being updated or changed
+# source: https://www.digitalocean.com/community/tutorials/how-to-install-node-js-with-nvm-node-version-manager-on-a-vps
 action :create do
-
-	from_source_message = new_resource.from_source ? ' _from_source' : ''
-	from_source_arg = new_resource.from_source ? '-s' : ''
-
-	bash "install_node_js_#{new_resource.version}#{from_source_message}" do
+	bash "alias_default_default_node.js_#{new_resource.version}" do
     flags '-l'
     user new_resource.user
     group new_resource.group
 		code <<-EOH
 			source #{node['nvm']['source']}
-			nvm install #{from_source_arg} #{new_resource.version}
+			nvm use #{new_resource.version}
+			n=$(which node); n=${n%/bin/node}; chmod -R 755 $n/bin/*; sudo cp -r $n/{bin,lib,share} /usr
 		EOH
 	end
 
-	nvm_system_default "system_default_#{new_resource.version}" do
-		version new_resource.version
-    user new_resource.user
-    group new_resource.group
-		action :create
-		only_if { new_resource.set_system_default }
-	end
 	new_resource.updated_by_last_action(true)
 end

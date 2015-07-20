@@ -1,5 +1,2 @@
-<% if @user_install %>
-[ -f ${HOME}/.nvm/nvm.sh ] && . ${HOME}/.nvm/nvm.sh
-<% else %>
-[ -f /root//.nvm/nvm.sh ] && . /root/.nvm/nvm.sh
-<% end %>
+export NVM_DIR=/usr/local/nvm
+source <%= @nvm_directory %>/nvm.sh

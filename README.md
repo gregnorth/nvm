@@ -4,8 +4,15 @@ Chef cookbook for setting up NVM from [creationix's github repository](https://g
 
 ## Requirements
 
-Built to run on Linux distributions. Tested on Ubuntu 12.04.
-Depends on the `git` cookbook.
+The following platforms are tested directly under test-kitchen; see .kitchen.yml for details.
+
+- CentOS 6.6, 7.1
+- Ubuntu 12.04
+
+The following platforms are known to work:
+
+- Debian family (Ubuntu)
+- Red Hat family (CentOS)
 
 ## Usage
 
@@ -17,7 +24,7 @@ Install nvm and node.js version 0.10.5.
 	# install node.js v0.10.5
 	nvm_install 'v0.10.5'  do
 		from_source false
-		alias_as_default true
+		set_system_default true
 		action :create
 	end
 
@@ -45,7 +52,7 @@ Install a node.js version from source or binaries
 
 - `version` - node.js version, default to the name attribute
 - `from_source` - install from source if true, default to false
-- `alias_as_default` - alias the current version as the default version, default true
+- `set_system_default` - set the current version as the system default, default true
 
 #### Examples
 
@@ -53,7 +60,7 @@ Install from binary
 
 	nvm_install '0.10.5'  do
 		from_source false
-		alias_as_default true
+		set_system_default true
 		action :create
 	end
 
@@ -61,12 +68,12 @@ Install from source
 
 	nvm_install '0.10.5'  do
 		from_source true
-		alias_as_default true
+		set_system_default true
 		action :create
 	end
 
 
-### nvm_alias_default
+### nvm_system_default
 
 Use by default the given node.js version
 
@@ -82,18 +89,13 @@ Use by default the given node.js version
 
 Use by default node.js version 0.10.0
 
-	nvm_alias_default '0.10.0'  do
+	nvm_system_default '0.10.0'  do
 		action :create
 	end
 
-## Cookbook development
-
-You will need to do a couple of things to be up to speed to hack on this cookbook.
-Everything is explained [here](https://github.com/hipsnip-cookbooks/cookbook-development) have a look.
-
 ## Test
 
-    bundle exec rake cookbook:full_test
+    kitchen test
 
 ## Licence
 

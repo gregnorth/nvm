@@ -20,11 +20,8 @@
 actions :create
 default_action :create
 
+attribute :version, :kind_of => String, :name_attribute => true
 attribute :from_source, :kind_of => [TrueClass, FalseClass], :default => false
-attribute :alias_as_default, :kind_of => [TrueClass, FalseClass], :default => false
-attribute :user, :kind_of => String, :default => 'root'
-attribute :group, :kind_of => String, :default => 'root'
-attribute :user_install, :kind_of => [TrueClass, FalseClass], :default => false
-attribute :version, :kind_of => String, :default => node['nvm']['nodejs_version']
-attribute :nvm_directory, :kind_of => String, :default => node['nvm']['directory']
-attribute :user_home, :kind_of => String
+attribute :set_system_default, :kind_of => [TrueClass, FalseClass], :default => false
+attribute :user, :kind_of => String, :default => node['nvm']['user']
+attribute :group, :kind_of => String, :default => node['nvm']['group']

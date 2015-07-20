@@ -17,17 +17,10 @@
 # limitations under the License.
 #
 
-action :create do
-	script "Alias default node.js version to #{new_resource.version}..." do
-    interpreter 'bash'
-    flags '-l'
-    user user
-    group group
-    environment Hash[ 'HOME' => node['nvm']['home'] ]
-		code <<-EOH
-			#{node['nvm']['source']}
-			nvm alias default #{new_resource.version}
-		EOH
-	end
-	new_resource.updated_by_last_action(true)
-end
+actions :create
+default_action :create
+
+attribute :name, :kind_of => String, :name_attribute => true
+attribute :version, :kind_of => String, :required => true
+attribute :user, :kind_of => String, :default => node['nvm']['user']
+attribute :group, :kind_of => String, :default => node['nvm']['group']
