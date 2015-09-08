@@ -23,12 +23,12 @@
 action :create do
 	bash "alias_default_default_node.js_#{new_resource.version}" do
     flags '-l'
-    user new_resource.user
+    user 'root'
     group new_resource.group
 		code <<-EOH
 			source #{node['nvm']['source']}
 			nvm use #{new_resource.version}
-			n=$(which node); n=${n%/bin/node}; chmod -R 755 $n/bin/*; sudo cp -r $n/{bin,lib,share} /usr
+			n=$(which node); n=${n%/bin/node}; chmod -R 755 $n/bin/*; cp -r $n/{bin,lib,share} /usr
 		EOH
 	end
 
